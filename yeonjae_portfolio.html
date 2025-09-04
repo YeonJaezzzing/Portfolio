@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/portfolio.css">
+</head>
+
+<body>
+  <div class="all-container">
+    <!-- 상단 민트 스트로크 -->
+    <div class="top-container" aria-hidden="true">
+      <img class="mint-stroke" src="./images/pink_glass.svg" alt="">
+    </div>
+
+    <!-- 헤더 -->
+    <header class="page-header">
+      <div class="container">
+        <span class="brand">Jang Yeon Jae</span>
+      </div>
+    </header>
+
+    <!-- 히어로(글라스) -->
+    <section class="hero">
+      <div class="container">
+        <div class="glass-hero">
+          <h1>A Product Designer<br/>Bridging Data, Experience, and Design.</h1>
+          <p class="sub">데이터와 경험을 디자인으로 연결하는 프로덕트 디자이너</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 탭 -->
+    <nav class="tabs">
+      <div class="container">
+        <ul>
+          <li class="active"><button type="button" data-target="uiux">UI/UX</button></li>
+          <li><button type="button" data-target="contents">Contents</button></li>
+          <li><button type="button" data-target="profile">Profile</button></li>
+          <li><button type="button" data-target="contact">Contact</button></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- 캐러셀 -->
+    <section class="carousel">
+      <div class="container">
+        <button class="nav-arrow prev" type="button" aria-label="Previous">
+          <img src="./images/next_left.svg" alt="left arrow">
+        </button>
+        <button class="nav-arrow next" type="button" aria-label="Next">
+          <img src="./images/next_right.svg" alt="right arrow">
+        </button>
+
+        <div class="cards" role="region" aria-label="Projects">
+          <!-- 카드 4장: data-key로 탭/상단디자인과 매핑 가능 -->
+          <article class="card card-left"   data-key="uiux">
+            <div class="card-content">
+              <img src="./images/2_Profile_소개.png" alt="UI/UX 썸네일" class="card-thumbnail">
+              <h3>UI/UX</h3>
+            </div>
+          </article>
+          <article class="card card-center" data-key="contents"><h3>Contents</h3></article>
+          <article class="card card-right"  data-key="profile"><h3>Profile</h3></article>
+          <article class="card card-far"    data-key="contact"><h3>Contact</h3></article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const root  = document.querySelector(".all-container");
+  const tabs  = Array.from(document.querySelectorAll(".tabs ul li"));
+  const btns  = tabs.map(li => li.querySelector("button"));
+  const keysFromTabs = btns.map(b => b.dataset.target); // ['uiux','contents','profile','contact']
+  const cardsWrap = document.querySelector(".cards");
+  const cards = Array.from(cardsWrap.querySelectorAll(".card"));
+  const elHeroTitle = document.querySelector(".glass-hero h1"); 
+  const elHeroSub   = document.querySelector(".glass-hero .sub");
+  const elTopGlass  = document.querySelector(".top-container .mint-stroke");
+
+  // 테마 리소스
+  const THEMES = {
+    uiux:     { heroTitle: "A Product Designer\nBridging Data, Experience, and Design.", heroSub: "데이터와 경험을 디자인으로 연결하는 프로덕트 디자이너", glassImg: "./images/pink_glass.svg",    rootClass: "theme-uiux" },
+    contents: { heroTitle: "Creating Engagement by Connecting Brands and ,\nAudiences through Content Strategy.",                   heroSub: "콘텐츠 전략으로 브랜드와 고객을 이어주는 인게이지먼트 경험",            glassImg: "./images/mint_glass.svg",    rootClass: "theme-contents" },
+    profile:  { heroTitle: "A Convergent Talent Who Challenges\nThoughts and Captures Hearts.",                                            heroSub: "생각을 흔들고 마음을 머무르게 하는 융합형 인재",                    glassImg: "./images/blue_glass.svg",    rootClass: "theme-profile" },
+    contact:  { heroTitle: "Committed to contributing\nwith expertise and integrity.",                                     heroSub: "전문성과 책임으로 가치에 기여하겠습니다",                      glassImg: "./images/purple_glass.svg",  rootClass: "theme-contact" }
+  };
+
+  // ----- 공통 함수
+  function getCenterKey(){
+    const center = cards.find(c => c.classList.contains("card-center"));
+    return center ? center.dataset.key : keysFromTabs[0]; 
+  }
+
+  function syncTabs(key){
+    tabs.forEach(li => {
+      const k = li.querySelector("button")?.dataset.target;
+      li.classList.toggle("active", k === key);
+    });
+  }
+
+  function applyTheme(key){
+    const cfg = THEMES[key] || THEMES.uiux;
+    root.classList.remove("theme-uiux","theme-contents","theme-profile","theme-contact");
+    root.classList.add(cfg.rootClass);
+    if (elTopGlass && cfg.glassImg) elTopGlass.src = cfg.glassImg;
+    if (elHeroTitle) elHeroTitle.innerText = cfg.heroTitle;
+    if (elHeroSub)   elHeroSub.textContent = cfg.heroSub;
+  }
+
+  function setCenterTo(key){
+    const order = cards.map(c => c.dataset.key);
+    const idx = order.indexOf(key);
+    if (idx === -1) return;
+
+    const newOrder = [
+      cards[(idx - 1 + 4) % 4],
+      cards[idx],
+      cards[(idx + 1) % 4],
+      cards[(idx + 2) % 4]
+    ];
+    newOrder[0].className = "card card-left";
+    newOrder[1].className = "card card-center";
+    newOrder[2].className = "card card-right";
+    newOrder[3].className = "card card-far";
+
+    syncTabs(key);
+    applyTheme(key);
+  }
+
+  function rotate(dir = 1){
+    const seq = cards.map(c => c.dataset.key);
+    const ci  = seq.indexOf(getCenterKey());
+    const nextKey = seq[(ci + (dir>0?1:-1) + 4) % 4];
+    setCenterTo(nextKey);
+  }
+
+  // ----- 이벤트
+  document.querySelector(".nav-arrow.prev")?.addEventListener("click", () => rotate(-1));
+  document.querySelector(".nav-arrow.next")?.addEventListener("click", () => rotate(1));
+  tabs.forEach(li => {
+    li.addEventListener("click", () => {
+      const key = li.querySelector("button")?.dataset.target;
+      if (key) setCenterTo(key);
+    });
+  });
+
+  // ----- 초기 동기화: "활성 탭"을 기준으로 시작 (중요!)
+  const activeTab = document.querySelector(".tabs li.active button")?.dataset.target || keysFromTabs[0];
+  setCenterTo(activeTab);
+
+  // ======================================================
+  //                      MODAL
+  // ======================================================
+  const MODALS = {
+    uiux:     { title: "UI/UX",     html: "<p>UI/UX 대표 프로젝트 섹션.</p>" },
+    contents: { title: "Contents",  html: "<p>콘텐츠 전략/제작 아카이브.</p>" },
+    profile:  { title: "Profile",   html: `
+      <div class="profile-modal-content">
+        <img src="./images/2_Profile_소개.png" alt="프로필 소개" class="profile-modal-image">
+        <img src="./images/3_Profile_QnA.png" alt="프로필 Q&A" class="profile-modal-image">
+      </div>
+    ` },
+    contact:  { title: "Contact",   html: "<p>연락처/협업 문의.</p>" }
+  };
+
+  function createModalDom(){
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.innerHTML = `
+      <div class="modal-dialog" role="document">
+        <div class="modal-head">
+          <h3 class="modal-title">Title</h3>
+          <button class="modal-close" type="button" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" tabindex="0"></div>
+      </div>`;
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+
+  const overlay = createModalDom();
+  const dialog  = overlay.querySelector('.modal-dialog');
+  const titleEl = overlay.querySelector('.modal-title');
+  const bodyEl  = overlay.querySelector('.modal-body');
+  const closeEl = overlay.querySelector('.modal-close');
+
+  function openModal(key){
+    const data = MODALS[key] || {title:key, html:""};
+    titleEl.textContent = data.title;
+    bodyEl.innerHTML = data.html;
+    overlay.classList.add('is-open');
+    document.body.classList.add('body-locked');
+    closeEl.focus();
+    document.addEventListener('keydown', onKeydown);
+    overlay.addEventListener('click', onOverlayClick);
+  }
+  function closeModal(){
+    overlay.classList.remove('is-open');
+    document.body.classList.remove('body-locked');
+    document.removeEventListener('keydown', onKeydown);
+    overlay.removeEventListener('click', onOverlayClick);
+  }
+  function onKeydown(e){
+    if (e.key === 'Escape'){ e.preventDefault(); closeModal(); }
+    if (e.key === 'Tab'){
+      const f = overlay.querySelectorAll('button, [href], input, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = f[0], last = f[f.length-1];
+      if (!first || !last) return;
+      if (e.shiftKey && document.activeElement === first){ last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last){ first.focus(); e.preventDefault(); }
+    }
+  }
+  function onOverlayClick(e){
+    if (!dialog.contains(e.target)) closeModal();
+  }
+  closeEl.addEventListener('click', closeModal);
+
+  // 카드 클릭 → 모달
+  cards.forEach(card=>{
+    card.addEventListener('click', ()=>{
+      openModal(card.dataset.key);
+    });
+  });
+});
+</script>
+</body>
+</html>
