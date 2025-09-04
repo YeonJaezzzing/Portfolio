@@ -56,12 +56,7 @@
 
         <div class="cards" role="region" aria-label="Projects">
           <!-- 카드 4장: data-key로 탭/상단디자인과 매핑 가능 -->
-          <article class="card card-left"   data-key="uiux">
-            <div class="card-content">
-              <img src="./images/2_Profile_소개.png" alt="UI/UX 썸네일" class="card-thumbnail">
-              <h3>UI/UX</h3>
-            </div>
-          </article>
+          <article class="card card-left"   data-key="uiux"><h3>UI/UX</h3></article>
           <article class="card card-center" data-key="contents"><h3>Contents</h3></article>
           <article class="card card-right"  data-key="profile"><h3>Profile</h3></article>
           <article class="card card-far"    data-key="contact"><h3>Contact</h3></article>
@@ -160,12 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const MODALS = {
     uiux:     { title: "UI/UX",     html: "<p>UI/UX 대표 프로젝트 섹션.</p>" },
     contents: { title: "Contents",  html: "<p>콘텐츠 전략/제작 아카이브.</p>" },
-    profile:  { title: "Profile",   html: `
-      <div class="profile-modal-content">
-        <img src="./images/2_Profile_소개.png" alt="프로필 소개" class="profile-modal-image">
-        <img src="./images/3_Profile_QnA.png" alt="프로필 Q&A" class="profile-modal-image">
-      </div>
-    ` },
+    profile:  { title: "Profile",   html: "<p>약력, 역량맵, 수상/논문 등.</p>" },
     contact:  { title: "Contact",   html: "<p>연락처/협업 문의.</p>" }
   };
 
