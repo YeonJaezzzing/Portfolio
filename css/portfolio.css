@@ -302,6 +302,10 @@ html, body{
   object-fit: cover;
   border-radius: 12px;
 }
+ 
+/* ---------- Footer ---------- */
+.page-footer{ position:relative; z-index:2; padding:24px 0 40px; }
+.page-footer small{ display:block; text-align:center; color:#6b7280; font-size:14px; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 768px){
