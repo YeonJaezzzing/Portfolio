@@ -56,10 +56,18 @@
 
         <div class="cards" role="region" aria-label="Projects">
           <!-- 카드 4장: data-key로 탭/상단디자인과 매핑 가능 -->
-          <article class="card card-left"   data-key="uiux"><h3>UI/UX</h3></article>
-          <article class="card card-center" data-key="contents"><h3>Contents</h3></article>
-          <article class="card card-right"  data-key="profile"><h3>Profile</h3></article>
-          <article class="card card-far"    data-key="contact"><h3>Contact</h3></article>
+          <article class="card card-left"   data-key="uiux">
+            <img src="./images/1_app_jarket.png" alt="UI/UX 앱 자켓" class="uiux-card-image">
+          </article>
+                      <article class="card card-center" data-key="contents">
+              <img src="./images/contents_jacket.png" alt="Contents 썸네일" class="contents-card-image">
+            </article>
+          <article class="card card-right"  data-key="profile">
+            <img src="./images/profile_jacket.png" alt="프로필" class="profile-card-image">
+          </article>
+                      <article class="card card-far"    data-key="contact">
+              <img src="./images/contact_jacket.png" alt="Contact 썸네일" class="contact-card-image">
+            </article>
         </div>
       </div>
     </section>
@@ -153,10 +161,48 @@ document.addEventListener("DOMContentLoaded", () => {
   //                      MODAL
   // ======================================================
   const MODALS = {
-    uiux:     { title: "UI/UX",     html: "<p>UI/UX 대표 프로젝트 섹션.</p>" },
-    contents: { title: "Contents",  html: "<p>콘텐츠 전략/제작 아카이브.</p>" },
-    profile:  { title: "Profile",   html: "<p>약력, 역량맵, 수상/논문 등.</p>" },
-    contact:  { title: "Contact",   html: "<p>연락처/협업 문의.</p>" }
+    uiux:     { title: "UI/UX",     html: `
+      <div class="uiux-modal-image">
+        <img src="./images/Portfolio_fn.png" alt="UI/UX 포트폴리오 전체" class="uiux-modal-img">
+      </div>
+    ` },
+    contents: { title: "Contents",  html: `
+      <div class="contents-modal-image">
+        <img src="./images/Contents2.png" alt="Contents 전체" class="contents-modal-img">
+      </div>
+    ` },
+    profile:  { title: "Profile",   html: `
+      <div class="profile-modal-images">
+        <img src="./images/2_Profile_소개.png" alt="프로필 소개" class="profile-modal-img">
+        <img src="./images/3_Profile_QnA.png" alt="프로필 Q&A" class="profile-modal-img">
+      </div>
+    ` },
+    contact:  { title: "Contact",   html: `
+      <div class="contact-form-container">
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+          <input type="hidden" name="access_key" value="1e645800-a696-4f43-9fa6-3671ee175bf2">
+          
+          <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" placeholder="이메일을 입력해주세요" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">메시지</label>
+            <textarea id="message" name="message" placeholder="메시지를 입력해주세요" rows="5" required></textarea>
+          </div>
+          
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
+          
+          <button type="submit" class="submit-btn">메시지 보내기</button>
+        </form>
+      </div>
+    ` }
   };
 
   function createModalDom(){
